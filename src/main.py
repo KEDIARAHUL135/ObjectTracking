@@ -1,18 +1,27 @@
 import cv2
 import numpy as np
+import src.macros as M
 import time
 
 t1 = time.time()
-cap = cv2.VideoCapture("InputVideos/InputVideo1.mp4")
+
+global cap
+if M.VIDEO_OR_WEBCAM == 1:
+    cap = cv2.VideoCapture(M.INPUT_VIDEO_PATH)
+else:
+    cap = cv2.VideoCapture(0)
+
 _, OldFrame = cap.read()
 
 
 def DisplayFrames(NewFrame, DiffFrame, ThreshDiffFrame, DilateDiffFrame, Frame):
 
-    #cv2.imshow("CurrentFrame", NewFrame)
-    #cv2.imshow("DiffFrame", DiffFrame)
-    #cv2.imshow("ThressDiffFrame", ThreshDiffFrame)
-    #cv2.imshow("DilateDiffFrame", DilateDiffFrame)
+    if M.SHOW_ALLorOUTPUT == 1:
+        cv2.imshow("CurrentFrame", NewFrame)
+        cv2.imshow("DiffFrame", DiffFrame)
+        cv2.imshow("ThressDiffFrame", ThreshDiffFrame)
+        cv2.imshow("DilateDiffFrame", DilateDiffFrame)
+
     cv2.imshow("Contours", Frame)
 
 
@@ -33,7 +42,7 @@ while cap.isOpened():
     Contours, _ = cv2.findContours(DilateDiffFrame, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
     for Contour in Contours:
-        if cv2.contourArea(Contour) < 300:
+        if cv2.contourArea(Contour) < M.MIN_CONTOUR_AREA:
             continue
 
         (x, y, w, h) = cv2.boundingRect(Contour)
@@ -44,7 +53,7 @@ while cap.isOpened():
     DisplayFrames(NewFrame, DiffFrame, ThreshDiffFrame, DilateDiffFrame, Frame)
     OldFrame = NewFrame.copy()
 
-    Key = cv2.waitKey(0)
+    Key = cv2.waitKey(M.WAITKEY_VALUE)
     if Key == 32:       # Break when space is pressed
         break
 
