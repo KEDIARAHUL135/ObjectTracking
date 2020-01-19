@@ -36,8 +36,8 @@ while cap.isOpened():
     DiffFrame = cv2.absdiff(OldFrame, NewFrame)
     BlurDiffFrame = cv2.GaussianBlur(DiffFrame, (5, 5), 2)
     GrayDiffFrame = cv2.cvtColor(BlurDiffFrame, cv2.COLOR_BGR2GRAY)
-    _, ThreshDiffFrame = cv2.threshold(GrayDiffFrame, 20, 255, cv2.THRESH_BINARY)
-    DilateDiffFrame = cv2.dilate(ThreshDiffFrame, (11, 11), iterations=10)
+    _, ThreshDiffFrame = cv2.threshold(GrayDiffFrame, M.THRESHOLD_AT, 255, cv2.THRESH_BINARY)
+    DilateDiffFrame = cv2.dilate(ThreshDiffFrame, (11, 11), iterations=M.DILATION_ITERATIONS)
 
     Contours, _ = cv2.findContours(DilateDiffFrame, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
