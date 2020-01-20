@@ -7,7 +7,6 @@
 ################################################################################
 
 import cv2
-import numpy as np
 import src.macros as M
 import time
 
@@ -65,15 +64,20 @@ while cap.isOpened():
         if cv2.contourArea(Contour) < M.MIN_CONTOUR_AREA:
             continue
 
-        # Creating rectangle bounding the contour.
+        # Creating rectangle bounding the contour. (Red)
         (x, y, w, h) = cv2.boundingRect(Contour)
         cv2.rectangle(Frame, (x, y), (x+w, y+h), (0, 0, 255), thickness=2)
 
+    # Drawing contours (Green)
     cv2.drawContours(Frame, Contours, -1, (0, 255, 0), thickness=2)
 
+    # Function for displaying frames
     DisplayFrames(NewFrame, DiffFrame, ThreshDiffFrame, DilateDiffFrame, Frame)
+
+    # Copying current frame to old frame for next iteration/set of frames.
     OldFrame = NewFrame.copy()
 
+    # Escape when space bar is hit.
     Key = cv2.waitKey(M.WAITKEY_VALUE)
     if Key == 32:       # Break when space is pressed
         break

@@ -1,3 +1,11 @@
+###############################################################################
+# File          : macros.py
+# Created by    : Rahul Kedia
+# Created on    : 19/01/2020
+# Project       : ObjectTracking
+# Description   : This file contains the variables/macros for main.py.
+################################################################################
+
 # Value of waitKey
 WAITKEY_VALUE = 0
 
